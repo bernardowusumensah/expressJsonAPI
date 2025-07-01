@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1.text-2xl.font-bold.mb-4 Admin - Projects
+
+  form(action="/admin/projects" method="POST" class="mb-8 space-y-2 max-w-xl")
+    input(type="text" name="title" placeholder="Project title" required class="w-full p-2 border rounded")
+    textarea(name="description" placeholder="Description" class="w-full p-2 border rounded")
+    input(type="url" name="githubLink" placeholder="GitHub URL" class="w-full p-2 border rounded")
+    input(type="url" name="liveLink" placeholder="Live site URL" class="w-full p-2 border rounded")
+    input(type="text" name="imageUrl" placeholder="Image URL" class="w-full p-2 border rounded")
+    input(type="text" name="technologies" placeholder="Technologies (comma separated)" class="w-full p-2 border rounded")
+    button(type="submit" class="bg-blue-500 text-white px-4 py-2 rounded") Add Project
+
+  if projects.length
+    h2.text-xl.font-semibold.mt-6.mb-2 Current Projects
+    each project in projects
+      div.mb-4.p-4.bg-white.shadow-md.rounded
+        strong #{project.title}
+        p.text-gray-700 #{project.description}
+        if project.githubLink
+          a(href=project.githubLink target="_blank" class="text-blue-600 hover:underline mr-2") GitHub
+        if project.liveLink
+          a(href=project.liveLink target="_blank" class="text-green-600 hover:underline") Live Site
+        if project.technologies.length
+          p.mt-1.text-sm.text-gray-600 Technologies: #{project.technologies.join(', ')}
+        form(action=`/admin/projects/delete/${project._id}` method="POST" class="mt-2")
+          button(type="submit" class="bg-red-500 text-white px-2 py-1 rounded") Delete
+  else
+    p.text-gray-600 No projects yet.

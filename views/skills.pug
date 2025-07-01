@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1.text-2xl.font-bold.mb-4 Admin - Skills
+
+  form(action="/admin/skills" method="POST" class="mb-8 space-y-2 max-w-md")
+    input(type="text" name="name" placeholder="Skill name" required class="w-full p-2 border rounded")
+    select(name="level" required class="w-full p-2 border rounded")
+      option(value="") Select level
+      option(value="Beginner") Beginner
+      option(value="Intermediate") Intermediate
+      option(value="Advanced") Advanced
+    input(type="text" name="category" placeholder="Category (e.g. Frontend)" class="w-full p-2 border rounded")
+    button(type="submit" class="bg-blue-500 text-white px-4 py-2 rounded") Add Skill
+
+  if skills.length
+    h2.text-xl.font-semibold.mt-6.mb-2 Current Skills
+    ul
+      each skill in skills
+        li.flex.justify-between.items-center.mb-2
+          span #{skill.name} - #{skill.level} (#{skill.category})
+          form(action=`/admin/skills/delete/${skill._id}` method="POST")
+            button(type="submit" class="bg-red-500 text-white px-2 py-1 rounded") Delete
+  else
+    p.text-gray-600 No skills yet.
