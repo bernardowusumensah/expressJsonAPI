@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -16,12 +16,9 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log(" MongoDB connected"))
-.catch((err) => console.error(" MongoDB connection error:", err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log(" MongoDB connected"))
+  .catch((err) => console.error(" MongoDB connection error:", err));
 
 // Routes
 app.get('/', (req, res) => {
